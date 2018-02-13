@@ -4,80 +4,79 @@
 # https://github.com/Ada-C9/Word-Guess
 
 
-# class BodyPart
-#
-#   attr_reader
-#
-#
-#   def initialize()
-#
-#   end
-#
-# end
-#
-#
-#
-# class Guess
-#
-#
-# end
-#
-#
-# rib = BodyPart.new()
-#
-#
-# counter = 0
-# until wrong_guesses == 6
-#   counter -= counter
-# end
+class Art
+  # where we create the ASC art
+  attr_reader
 
+  def initialize()
 
-# show the dashes that represent the number of letters to the user
-# request a letter (guess) from your user
+  end
 
-# while .... num_guess += 1
-# number of guesses has to correlate to the number of letters in a word
-# until user_input == max_guesses
+end
 
-# body parts variable is set to an array of strings representing body parts
-body_parts = ["hand", "forearm", "upperarm"]
+class Word
+  attr_accessor :guess
 
-# randomly grabbing a word from body_parts array
-random_word = body_parts.sample
+  def initialize
+    @word = selection_of_word
+    @guess_array = build_guess_array
+  end
 
-puts random_word
+  def guess_status
+    return @guess_array.join("")
+  end
 
-random_word_length = random_word.length
-# dashes = "_" * random_word_length # user sees this
-# with every correct guess a dash is removed
-# and replaced with a letter
-guess = Array.new(random_word_length, "_ ")
+  def selection_of_word()
+    # body parts variable is set to an array of strings representing body parts
+    words = ["hand", "forearm", "upperarm", "surgery", "limbless", "gore", "shrug", "man", "knife", "amputation"]
+    # randomly grabbing a word from body_parts array
+    random_word = words.sample
 
-# putting contents of 'guess' using the join method (makes underscores print horizontally)
-puts guess.join("")
+  end
 
-puts "Put in your guess..."
-user_letter = gets.chomp.downcase
+  def build_guess_array
+    random_word_length = @word.length
+    # dashes = "_" * random_word_length # user sees this
+    # with every correct guess a dash is removed
+    # and replaced with a letter
+    puts @word
 
-# splitting 'random_word' string into its individual characters and storing them into the 'random_word_array' array
-random_word_array = random_word.chars
+    guess_array = Array.new(random_word_length, "_ ")
 
-# used for testing
-# puts "#{random_word_array.join("")}"
+    # putting contents of 'guess' using the join method (makes underscores print horizontally)
+    puts guess_array.join("")
+    # return guess_array.join("")
+  end
 
-# random_word_array looped through index
-random_word_array.each_index do |index|
-  # letter is set to the index of the 'random_word_array'
-  # setting 'letter' to the index of 'random_word_array' (which is the current letter)
-  letter = random_word_array[index]
-  # if letter is equal to the letter user submitted...
-  if letter == user_letter
-    # guess[index] = user_letter
-    # in this case below, the 'guess[index]' on the left is location, the 'guess[index]' is the dash being replaced by the user_letter
-    guess[index] = guess[index].sub("_", user_letter)
-    # used for testing to check output
-    puts guess.join("")
-    puts index
-    puts user_letter
+  def guess_letter(letter) # we split the letter in here for comparison against user input
+    # user_letter = guess # what is this SUPPOSED to be doing?
+
+    # splitting 'random_word' string into its individual characters and storing them into the 'random_word_array' array
+    random_word_array = random_word.chars
+
+    # get the user guess
+    puts "Provide a letter"
+    guess = gets.chomp.downcase
+
+    # COMPARE user guess to the split array
+    # random_word_array looped through index
+    random_word_array.each_index do |index|
+      # putting the current index equal to letter so we can use a conditional
+      letter = random_word_array[index]
+      # if letter is equal to the letter user submitted...
+      if letter == guess
+        # guess[index] = user_letter
+        # **in this case below, the 'guess[index]' on the left is location, the 'guess[index]' is the dash being replaced by the user_letter
+        ###doing the replacement here
+        @guess_array[index] = guess_array[index].sub("_", user_letter)
+        # used for testing to check output
+        puts guess.join("")
+        puts index
+        puts user_letter
+      end
+    end
   end
 end
+
+attempt = Word.new # this runs the whole thing once
+# puts attempt.build_guess_array # this runs the program again(and with a specific behavior invoked), but same word
