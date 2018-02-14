@@ -21,6 +21,11 @@ class Art
     return art_array
   end
 
+  def eliminate_art
+    show_art.slice(0)
+  end
+
+
 end
 
 class Word
@@ -56,16 +61,16 @@ class Word
 
   def guess_letter
     art = Art.new
+    # breaking up the word into separate letters so we can loop thru them
     word_characters = @word.chars
 
-    user_guess_count = 0
     incorrect_guesses = []
 
-    while user_guess_count > 0 && @replaced_underscore.include?("-")
+    while @guesses_available > 0 && @replaced_underscore.include?("-")
       puts art.show_art
-      puts art.art_array
       puts "Provide a letter"
       guess = gets.chomp.downcase
+      letter_of_random_word = 0
 
       # COMPARE user guess to the split array
       word_characters.each_index do |index|
@@ -76,36 +81,27 @@ class Word
           @replaced_underscore[index] = letter_of_random_word
           # puts replaced_underscore.join("")
           puts @replaced_underscore
-        else
-          guesses_available -= 1
-          puts "Guesses_left: #{guesses_available}"
-          incorrect_guesses << guess
-
         end
       end
 
-      # if @replaced_underscore[index] != letter_of_random_word
-      #   incorrect_guesses << guess
-      # end
-      #
-      # puts "#{incorrect_guesses}"
-      puts "Not finished, keep going"
+      @guesses_available -= 1
 
-      # user_guess_count += 1
-      # puts "Guesses left: #{@guesses_available - user_guess_count}"
-      #
-      # if user_guess_count == @guesses_available
-      #   puts "You're out of guesses!"
-      # end
+      puts "Guesses_left: #{@guesses_available}"
+
+      if letter_of_random_word != guess
+        incorrect_guesses << guess
+      end
+
+      # puts incorrect_guesses.length
+      puts "You've guessed these incorrect letters so far: #{incorrect_guesses.join(",")}"
+      puts "Keep going!"
+
     end
 
     puts "You win!"
     exit
   end
 end
-
-# count the number of guesses inside of the word Array
-# the number of
 
 
 attempt = Word.new # this runs the whole thing once
